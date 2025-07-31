@@ -184,6 +184,43 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum MyToken.StakingPeriod",
+						"name": "period",
+						"type": "uint8"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "stakeIndex",
+						"type": "uint256"
+					}
+				],
+				"name": "Staked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "from",
 						"type": "address"
 					},
@@ -201,6 +238,31 @@
 					}
 				],
 				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "totalAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "stakeIndex",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdrawn",
 				"type": "event"
 			},
 			{
@@ -249,6 +311,25 @@
 					}
 				],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "enum MyToken.StakingPeriod",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"name": "apy",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -330,6 +411,24 @@
 			{
 				"inputs": [],
 				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum MyToken.StakingPeriod",
+						"name": "period",
+						"type": "uint8"
+					}
+				],
+				"name": "stake",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -422,6 +521,63 @@
 					}
 				],
 				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "userStakes",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardRate",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isActive",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "stakeIndex",
+						"type": "uint256"
+					}
+				],
+				"name": "withdraw",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -612,11 +768,11 @@
 			]
 		},
 		"contracts/MyToken.sol": {
-			"keccak256": "0x8f41df326bb08b2fe53183b3200b526dc84f9f3681eee7494bc79d5fa5777b02",
+			"keccak256": "0x5b398220809d75c50c3dc9b1b96028858b223aa9413716923c3798dea4de64a0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://9a823a56b0b7f57418cd5d598e870a15c98dab49705e83cc1f6eed578c5eab53",
-				"dweb:/ipfs/QmP4ex7zcbyqR1Yc5FEJTzFcHew8FtvWHcwRK7KejyUMzp"
+				"bzz-raw://a0f08117beef6882a0e673b549793e797ba639e1b0f47c3c6f3ce6a50ebe5695",
+				"dweb:/ipfs/QmZK1ZnQMpPGmeeeZeZtDekQfqBjXFdRneCuH1AG4WgugG"
 			]
 		}
 	},
