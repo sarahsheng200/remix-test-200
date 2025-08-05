@@ -28,6 +28,7 @@ contract MyToken is ERC20, Ownable {
 
     mapping(StakingPeriod => uint256) public apy; // 年化收益率（百分比，如20表示20%）
     mapping(address => mapping(uint256=>Stake)) public userStakes; // 用户的所有质押订单
+    mapping(address => uint256) public nextStakeId; // 自增计数器
 
     event Staked(
         address indexed user,
@@ -61,15 +62,16 @@ contract MyToken is ERC20, Ownable {
     }
 
     function stake(uint256 amount, StakingPeriod period) external {
+        uint256 amountWei=amount*10**18;
         require(amount>0, "Amount should be positive");
-        require(balanceOf(msg.sender)>=amount, "Insufficient balance");
+        require(balanceOf(msg.sender)>=amountWei, "Insufficient balance");
 
         timeMapping memory durMapping = _getDuration(period);
         uint256 dur=durMapping.time;
         uint256 periodDays=durMapping.periodDays;
         uint256 startT=block.timestamp;
         uint256 endT= startT + dur;
-        uint256 index=amount+endT;      
+        uint256 index =nextStakeId[msg.sender]++;
 
         emit Staked(msg.sender, amount, period, endT,index);
 
