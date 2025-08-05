@@ -396,6 +396,25 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "nextStakeId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "owner",
 				"outputs": [
@@ -768,11 +787,11 @@
 			]
 		},
 		"contracts/MyToken.sol": {
-			"keccak256": "0xc16e94d0dfbdcd718bde7f9b6e2fa8674739b0f424c6123a0996892ad227f87c",
+			"keccak256": "0x61086d8b2cbe3ab271735efe7b882b7f92762005ea8ebe7277a34ac4ef1f58d0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://6f424a0a90782b56969f00dd1cf2edda8601cf035b4ef8dde790082277a7aff1",
-				"dweb:/ipfs/QmbChQEiora7r3ydygGuJjsJpNceM7EsVKaUiyADpgdGCd"
+				"bzz-raw://c8ff0a9c02656132300be21e79efdcbd4fa4b2529cfaa2b215990d866d741991",
+				"dweb:/ipfs/QmNtCp3iQ4ktXC5kZgxDeyvKn6HQEMNaGNgXZkZGCVWdh5"
 			]
 		}
 	},
