@@ -47,10 +47,10 @@ contract MtkContracts  {
 
     event Withdrawn(
         address indexed user,
-        uint256 stakeIndex,    
+        uint256 stakeIndex,   
+        uint256 totalAmount, 
         uint256 standAmount,
-        uint256 reward,
-        uint256 totalAmount     
+        uint256 reward   
     );
 
     constructor(
@@ -122,20 +122,20 @@ contract MtkContracts  {
     }
 
     function withdraw(uint256 stakeIndex) external {
-        require(stakeOwnerMapping[stakeIndex]==msg.sender, string.concat("You are not the owner of this stake, stakeIndex is",Strings.toString(stakeIndex)));
+        require(stakeOwnerMapping[stakeIndex]==msg.sender, string.concat("You are not the owner of this stake, stakeIndex is ",Strings.toString(stakeIndex)));
 
         Stake storage s = userStakes[msg.sender][stakeIndex];
-       
+        
         require(s.isActive, "Stake is not active or already withdrawn");
         require(block.timestamp >= s.endTime, "Stake period is not ended");
         
         uint256 reward=s.amount*s.rewardRate/100/10**18;
         uint256 totalAmount=s.amount+reward;
-
+        require( stakingToken.balanceOf(address(this)) >= totalAmount, string.concat("Withdraw: Contract balance is insufficient for this withdrawal, totalAmount is ",Strings.toString(totalAmount)));
         require(stakingToken.transfer( msg.sender, totalAmount),"Withdrawning: Transfer failed");
- 
+  
         s.isActive=false;
-        emit Withdrawn(msg.sender,stakeIndex,s.amount,reward,totalAmount);
+        emit Withdrawn(msg.sender,stakeIndex,totalAmount,s.amount,reward);
     }
 
     // 生成唯一的质押ID

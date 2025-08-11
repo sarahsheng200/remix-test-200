@@ -71,6 +71,12 @@
 					{
 						"indexed": false,
 						"internalType": "uint256",
+						"name": "totalAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
 						"name": "standAmount",
 						"type": "uint256"
 					},
@@ -78,12 +84,6 @@
 						"indexed": false,
 						"internalType": "uint256",
 						"name": "reward",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "totalAmount",
 						"type": "uint256"
 					}
 				],
@@ -413,11 +413,11 @@
 			]
 		},
 		"contracts/stake.sol": {
-			"keccak256": "0xda6d5d627844e2a058f6e36f40e8d652ecc37d959d762688af098a2701261fbd",
+			"keccak256": "0xcb450072faccfe6fcd0c44a2daa9f411bc5400ec7b0de5f413fcb38869cb097a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://4a234f6829500fd22e71c9ebc032b13e11389cb073ac2393feb87c8724951d15",
-				"dweb:/ipfs/QmciRfiUJTk7XMYxpnaph9ZJxzWt6suszZiJpsqpYuLVs9"
+				"bzz-raw://ea2f5959a1a1c95f07875adf5a06d09266d80d05701840dd07ecf2adace048bb",
+				"dweb:/ipfs/QmQns9ie7rYZ6opF4b5FCnmiQLPQy6j6MChAMy96rVUHv6"
 			]
 		}
 	},
