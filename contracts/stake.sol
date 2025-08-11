@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract MtkContracts  {
 
@@ -39,15 +40,17 @@ contract MtkContracts  {
     event Staked(
         address indexed user,
         uint256 amount,
-        StakingPeriod period,
-        uint256 timestamp,
-        uint256 stakeIndex
+        StakingPeriod period,      
+        uint256 stakeIndex,
+         uint256 timestamp
     );
 
     event Withdrawn(
         address indexed user,
-        uint256 totalAmount,
-        uint256 stakeIndex
+        uint256 stakeIndex,    
+        uint256 standAmount,
+        uint256 reward,
+        uint256 totalAmount     
     );
 
     constructor(
@@ -61,15 +64,10 @@ contract MtkContracts  {
         apy[StakingPeriod.OneYear] = 25;      // 20% 年化
     }
 
-
-
     function stake(uint256 amount, StakingPeriod period) external {
-        uint256 amountWei=amount*10**18;
         require(amount>0, "Amount should be positive");
-        require(stakingToken.balanceOf(msg.sender)>=amountWei, "Insufficient balance");
         require(stakingToken.transferFrom(msg.sender, address(this), amount),"Staking: Transfer failed");
        
-
         timeMapping memory durMapping = _getDuration(period);
         uint256 dur=durMapping.time;
         uint256 periodDays=durMapping.periodDays;
@@ -78,7 +76,7 @@ contract MtkContracts  {
         uint256 index =_generateStakeId();
         uint256 rate=apy[period]*periodDays*10**18/360;
 
-        emit Staked(msg.sender, amount, period, endT,index);
+        emit Staked(msg.sender, amount, period,index, endT);
 
         userStakes[msg.sender][index]=Stake({
             amount:amount,
@@ -95,7 +93,6 @@ contract MtkContracts  {
 
     // 内部函数：根据期限返回秒数
     function _getDuration(StakingPeriod period) internal pure returns (timeMapping memory) {
-
         if(period==StakingPeriod.ThirtyDays){
             return timeMapping({
                 periodDays:30,
@@ -122,21 +119,23 @@ contract MtkContracts  {
                 time:1 hours
             });
         }
-
     }
 
     function withdraw(uint256 stakeIndex) external {
-        require(stakeOwnerMapping[stakeIndex]==msg.sender, "You are not the owner of this stake");
+        require(stakeOwnerMapping[stakeIndex]==msg.sender, string.concat("You are not the owner of this stake, stakeIndex is",Strings.toString(stakeIndex)));
 
         Stake storage s = userStakes[msg.sender][stakeIndex];
        
         require(s.isActive, "Stake is not active or already withdrawn");
         require(block.timestamp >= s.endTime, "Stake period is not ended");
         
-        uint256 reward=s.amount*s.rewardRate/100/10** 18;
+        uint256 reward=s.amount*s.rewardRate/100/10**18;
         uint256 totalAmount=s.amount+reward;
+
+        require(stakingToken.transfer( msg.sender, totalAmount),"Withdrawning: Transfer failed");
+ 
         s.isActive=false;
-        emit Withdrawn(msg.sender,totalAmount,stakeIndex);
+        emit Withdrawn(msg.sender,stakeIndex,s.amount,reward,totalAmount);
     }
 
     // 生成唯一的质押ID
@@ -154,8 +153,8 @@ contract MtkContracts  {
             if(userStakes[user][index].isActive){
                 activeCount++;
             }
-
         }
+
         Stake[] memory activeStakes = new Stake[](activeCount);
         uint256 activeIndex=0;
 
