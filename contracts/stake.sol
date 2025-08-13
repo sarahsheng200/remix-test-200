@@ -36,6 +36,7 @@ contract MtkContracts  {
     mapping(address => uint256[]) public userStakeIndexes;
 
     uint256 private nonce;// 自增计数器
+    uint8 public decimals = 18;
 
     event Staked(
         address indexed user,
@@ -65,8 +66,9 @@ contract MtkContracts  {
     }
 
     function stake(uint256 amount, StakingPeriod period) external {
+        uint256 amountWei=amount*10**decimals;
         require(amount>0, "Amount should be positive");
-        require(stakingToken.transferFrom(msg.sender, address(this), amount),"Staking: Transfer failed");
+        require(stakingToken.transferFrom(msg.sender, address(this), amountWei),"Staking: Transfer failed");
        
         timeMapping memory durMapping = _getDuration(period);
         uint256 dur=durMapping.time;
@@ -74,12 +76,12 @@ contract MtkContracts  {
         uint256 startT=block.timestamp;
         uint256 endT= startT + dur;
         uint256 index =_generateStakeId();
-        uint256 rate=apy[period]*periodDays*10**18/360;
+        uint256 rate=apy[period]*periodDays*10**decimals/360;
 
-        emit Staked(msg.sender, amount, period,index, endT);
+        emit Staked(msg.sender, amountWei, period,index, endT);
 
         userStakes[msg.sender][index]=Stake({
-            amount:amount,
+            amount:amountWei,
             startTime:startT,
             endTime:endT,         // 质押结束时间
             rewardRate:rate,     // 收益率（根据期限计算）
@@ -125,13 +127,14 @@ contract MtkContracts  {
         require(stakeOwnerMapping[stakeIndex]==msg.sender, string.concat("You are not the owner of this stake, stakeIndex is ",Strings.toString(stakeIndex)));
 
         Stake storage s = userStakes[msg.sender][stakeIndex];
+        uint256 contractBalance = stakingToken.balanceOf(address(this));
         
         require(s.isActive, "Stake is not active or already withdrawn");
         require(block.timestamp >= s.endTime, "Stake period is not ended");
         
-        uint256 reward=s.amount*s.rewardRate/100/10**18;
+        uint256 reward=s.amount*s.rewardRate/100/10**decimals;
         uint256 totalAmount=s.amount+reward;
-        require( stakingToken.balanceOf(address(this)) >= totalAmount, string.concat("Withdraw: Contract balance is insufficient for this withdrawal, totalAmount is ",Strings.toString(totalAmount)));
+        require( contractBalance >= totalAmount, string.concat("Withdraw: Contract balance is insufficient for this withdrawal, totalAmount is ",Strings.toString(totalAmount), ", contractBalance is ", Strings.toString(contractBalance)));
         require(stakingToken.transfer( msg.sender, totalAmount),"Withdrawning: Transfer failed");
   
         s.isActive=false;

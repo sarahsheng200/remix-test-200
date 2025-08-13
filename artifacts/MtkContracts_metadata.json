@@ -110,6 +110,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "decimals",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -413,11 +426,11 @@
 			]
 		},
 		"contracts/stake.sol": {
-			"keccak256": "0xcb450072faccfe6fcd0c44a2daa9f411bc5400ec7b0de5f413fcb38869cb097a",
+			"keccak256": "0xe69c6336c15418a863487bd7a46c2f14667704d50797ba30ad47b3cd66a35caa",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ea2f5959a1a1c95f07875adf5a06d09266d80d05701840dd07ecf2adace048bb",
-				"dweb:/ipfs/QmQns9ie7rYZ6opF4b5FCnmiQLPQy6j6MChAMy96rVUHv6"
+				"bzz-raw://a6a6f8d0f80ccff93a56770f2152559bb0f2d46121256ed17544e08638920943",
+				"dweb:/ipfs/QmefPbfwrVcxWF6anjV6Gd7i91SZRxGCGbj1iKEHGYSuBa"
 			]
 		}
 	},
