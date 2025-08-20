@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract MyToken {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract MyToken is Ownable {
     string public name = "MyToken";
     string public symbol = "MTK";
     uint8 public decimals = 18;
@@ -13,10 +15,18 @@ contract MyToken {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    constructor(uint256 initialSupply) {
+
+     constructor(uint256 initialSupply) Ownable(msg.sender) {
         totalSupply = initialSupply * 10 ** uint256(decimals);
         balanceOf[msg.sender] = totalSupply;
         emit Transfer(address(0), msg.sender, totalSupply);
+    }
+
+    function mint(address to, uint256 amount) external onlyOwner {
+        uint256 amountWithDecimals = amount * 10 ** uint256(decimals);
+        totalSupply += amountWithDecimals;
+        balanceOf[to] += amountWithDecimals;
+        emit Transfer(address(0), to, amountWithDecimals);
     }
 
     function transfer(address to, uint256 value) public returns (bool success) {

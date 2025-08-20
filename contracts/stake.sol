@@ -43,7 +43,7 @@ contract MtkContracts  {
         uint256 amount,
         StakingPeriod period,      
         uint256 stakeIndex,
-         uint256 timestamp
+        uint256 timestamp
     );
 
     event Withdrawn(
