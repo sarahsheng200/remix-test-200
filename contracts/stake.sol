@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract MtkContracts  {
+contract StakeContracts  {
 
     struct Stake {
         uint256 amount;          // 质押数量

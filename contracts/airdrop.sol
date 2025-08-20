@@ -46,26 +46,20 @@ contract Airdrop is Ownable{
         airdropAmount=0;
         require(recipients.length==amounts.length, "length of address doesn't match with length of amounts");
         uint256 totalAmount=getSumAmount(amounts);
-        totalAmount=totalAmount*10**decimals;
+        totalAmount=totalAmount;
         require(airdropToken.balanceOf(msg.sender)>=totalAmount, "balance is not enough");
         require(isGov[msg.sender]|| msg.sender==owner(), "not the gov or owner");
 
-        for(uint i=0;i<recipients.length/batchSize+1;i++ ){
-            uint256 startIndex=i*batchSize;
-            uint256 endIndex=(i+1)*batchSize-1;
-            if(endIndex>recipients.length){
-                endIndex=recipients.length-1;
-            }
-            for(uint j=startIndex;j<=endIndex;j++){
-                address addr =recipients[j];
-                uint256 amount=amounts[j]*10**decimals;
-                require(amount>0, "Invalid amount");
-                require(addr!=address(0), "Invalid address");
-                require(airdropToken.transferFrom(msg.sender, addr, amount),"transfer failed") ;
-                emit Airdropped(addr,amount,processNum++,block.timestamp, "MTK" );
-                airdropAmount+=amount;
-            }
+        for(uint j=0;j<recipients.length;j++){
+            address addr =recipients[j];
+            uint256 amount=amounts[j];
+            require(amount>0, "Invalid amount");
+            require(addr!=address(0), "Invalid address");
+            require(airdropToken.transferFrom(msg.sender, addr, amount),"transfer failed") ;
+            emit Airdropped(addr,amount,processNum++,block.timestamp, "MTK" );
+            airdropAmount+=amount;
         }
+      
           // 判断转账的amount是否等于amounts之和
         require(airdropAmount==totalAmount,string.concat("airdrop amount is not correct, airdrop amount is: ",Strings.toString(airdropAmount),", total amount is: ",Strings.toString(totalAmount)));
     }
@@ -78,7 +72,7 @@ contract Airdrop is Ownable{
          processNum=0;
         require(recipients.length==amounts.length, "length of address doesn't match with length of amounts");
         uint256 totalAmount=getSumAmount(amounts);
-        totalAmount=totalAmount*10**decimals;
+        totalAmount=totalAmount;
         require(msg.value ==totalAmount, "balance of BNB is not enough");
         require(isGov[msg.sender]|| msg.sender==owner(), "not the gov or owner");
 
@@ -90,7 +84,7 @@ contract Airdrop is Ownable{
             }
             for(uint j=startIndex;j<=endIndex;j++){
                 address addr =recipients[j];
-                uint256 amount=amounts[j]*10**decimals;
+                uint256 amount=amounts[j];
                 require(amount>0, "Invalid amount");
                 require(addr!=address(0), "Invalid address");
                 (bool success, )=addr.call{value:amount}("");
@@ -114,6 +108,5 @@ contract Airdrop is Ownable{
         }
         return totalAmount;
     }
-
    
 }

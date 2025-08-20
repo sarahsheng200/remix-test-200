@@ -393,11 +393,11 @@
 			]
 		},
 		"contracts/airdrop.sol": {
-			"keccak256": "0x6cdb0d99270878b0276f8833149a7032a707ed3d296b8bd220f503a6a96cad22",
+			"keccak256": "0x189456b118a44d41899eda61224174b07cbb058a89f05b65ac7012b686a2f8ca",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://924d997abd8d20a4a449a6663490cf7e841774c15d53f992b00677557c6038ae",
-				"dweb:/ipfs/QmVW2Yibjd1pojcv7A5NUrxbnUrFcphMmLn4xDKG9RGvur"
+				"bzz-raw://f4b6669f03341d75419c8e5f398fef0d22dfbb957098d5f99d07e3039916e83c",
+				"dweb:/ipfs/QmSFdAYpRySRPCGutRbf39YPK6wPYGAcuzya37f9sSwkth"
 			]
 		}
 	},
