@@ -69,30 +69,22 @@ contract Airdrop is Ownable{
         // 第一步：验证两个数组长度是不是相等，验证接收的BNB数量是不是等于amounts数组之和
         // 遍历去转账空投
         // 每一个地址空投需要将address, amount 事件抛出
-         processNum=0;
+        processNum=0;
         require(recipients.length==amounts.length, "length of address doesn't match with length of amounts");
         uint256 totalAmount=getSumAmount(amounts);
         totalAmount=totalAmount;
-        require(msg.value ==totalAmount, "balance of BNB is not enough");
+        require(msg.value ==totalAmount, string.concat("balance of BNB is not enough, msg.vaule=",Strings.toString(msg.value) ,", totalAmount=",Strings.toString(totalAmount)));
         require(isGov[msg.sender]|| msg.sender==owner(), "not the gov or owner");
 
-        for(uint i=0;i<(recipients.length/batchSize)+1;i++ ){
-            uint256 startIndex=i*batchSize;
-            uint256 endIndex=(i+1)*batchSize-1;
-            if(endIndex>recipients.length-1){
-                endIndex=recipients.length;
-            }
-            for(uint j=startIndex;j<=endIndex;j++){
-                address addr =recipients[j];
-                uint256 amount=amounts[j];
-                require(amount>0, "Invalid amount");
-                require(addr!=address(0), "Invalid address");
-                (bool success, )=addr.call{value:amount}("");
-                require(success,"transfer failed");
-                emit Airdropped(addr,amount,processNum++,block.timestamp, "BNB");
-            }
-        }
-         
+        for(uint j=0;j<recipients.length;j++){
+            address addr =recipients[j];
+            uint256 amount=amounts[j];
+            require(amount>0, "Invalid amount");
+            require(addr!=address(0), "Invalid address");
+            (bool success, )=addr.call{value:amount}("");
+            require(success,"transfer failed");
+            emit Airdropped(addr,amount,processNum++,block.timestamp, "BNB");
+        }       
     }
 
 
